@@ -1,3 +1,4 @@
+
 # Ignore nested node_modules
 Application/node_modules/
 
@@ -31,7 +32,4 @@ Thumbs.db
 
 # Mac system files
 .DS_Store
-
-# Next.js build output
-.next/
-out/
+EOL
