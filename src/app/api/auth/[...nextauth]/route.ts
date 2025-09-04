@@ -6,11 +6,10 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import bcrypt from "bcryptjs";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
-
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -40,22 +39,18 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           image: user.image || null,
-          role: user.role || "user", // ✅ include role
+          role: user.role || "user",
         };
       },
     }),
   ],
-
   pages: { signIn: "/login" },
-
   events: {
     async createUser({ user }) {
       try {
         const client = await clientPromise;
         const db = client.db();
-
         if (!user?.email) return;
-
         await db.collection("users").updateOne(
           { email: user.email.toLowerCase() },
           {
@@ -64,7 +59,7 @@ export const authOptions: NextAuthOptions = {
               onboardingAt: null,
               modelStatus: "none",
               modelId: null,
-              role: "user", // ✅ default role
+              role: "user",
             },
           }
         );
@@ -73,22 +68,19 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.uid = (user as any).id;
-        token.role = (user as any).role || "user"; // ✅ save role
+        token.role = (user as any).role || "user";
       }
       return token;
     },
-
     async session({ session, token }) {
       if (session.user && token?.uid) {
         (session.user as any).id = token.uid as string;
         (session.user as any).role = (token as any).role || "user";
       }
-
       try {
         if (session.user?.email) {
           const client = await clientPromise;
@@ -96,40 +88,28 @@ export const authOptions: NextAuthOptions = {
           const doc = await db
             .collection("users")
             .findOne({ email: session.user.email.toLowerCase() });
-
           if (doc) {
             (session.user as any).onboardingChoice = doc.onboardingChoice ?? null;
             (session.user as any).modelStatus = doc.modelStatus ?? "none";
             (session.user as any).modelId = doc.modelId ?? null;
-            (session.user as any).role = doc.role ?? "user"; // ✅ sync role
+            (session.user as any).role = doc.role ?? "user";
           }
         }
       } catch (err) {
         console.error("[NextAuth callbacks.session] enrich error:", err);
       }
-
       return session;
     },
-
-    // ✅ Redirect admins directly to /admin after login
     async redirect({ url, baseUrl }) {
-      // If it's the default redirect after login
       if (url === baseUrl || url === `${baseUrl}/`) {
-        // Read token from query (NextAuth adds it temporarily)
         try {
           const u = new URL(url);
           if (u.searchParams.get("callbackUrl")) {
             return u.searchParams.get("callbackUrl")!;
           }
         } catch (_) {}
-
-        // Default: send admins to /admin, others to /dashboard
-        // (this works because we stored role in token/session above)
-        // Unfortunately, redirect callback doesn’t get session directly,
-        // so safest option: check url
         return `${baseUrl}/dashboard`;
       }
-
       return url;
     },
   },
