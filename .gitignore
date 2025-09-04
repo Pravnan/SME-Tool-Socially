@@ -1,5 +1,5 @@
 # Ignore nested node_modules
-Application/node_modules/
+node_modules/
 
 # Build output
 dist/
