@@ -1,7 +1,7 @@
 // src/app/api/accounts/facebook/start/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 const FB_APP_ID = process.env.FACEBOOK_APP_ID!;
 const FB_REDIRECT_URI = `${process.env.NEXTAUTH_URL}/api/accounts/facebook/callback`;

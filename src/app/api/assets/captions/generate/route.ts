@@ -1,7 +1,7 @@
 // src/app/api/assets/captions/generate/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;

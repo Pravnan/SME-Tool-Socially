@@ -1,7 +1,7 @@
 // src/app/api/assets/hashtags/generate/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 const GEMINI_MODEL = process.env.GEMINI_CAPTION_MODEL || "gemini-1.5-flash"; // free-tier works fine
