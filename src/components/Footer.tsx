@@ -44,8 +44,9 @@ const Footer: FC = () => {
         </ul>
 
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-          © 2025 <Link href="/" className="hover:underline">Socially™</Link>. All Rights Reserved.
+          © 2025 <Link href="/" className="hover:underline">Socially™</Link>. All Rights Reserved | Dev & Designed by praveenan.
         </span>
+        
       </div>
     </footer>
   );

@@ -14,7 +14,7 @@ export default function BodySection3() {
             We didn't reinvent the wheel
           </h2>
           <p className="mb-4 text-gray-600 sm:text-lg dark:text-gray-400">
-            We are strategists, designers, and developers — innovators and problem solvers. Small enough to be agile, big enough to deliver impact at scale.
+            We are strategists, designers, and developers innovators and problem solvers. Small enough to be agile, big enough to deliver impact at scale.
           </p>
           <p className="mb-6 text-gray-600 sm:text-lg dark:text-gray-400">
             Our team combines creativity and technology to help your business grow faster and smarter. Experience flexibility with results.

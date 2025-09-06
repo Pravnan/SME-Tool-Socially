@@ -142,10 +142,10 @@ export default function LoginPage() {
       <div className="hidden lg:flex items-center justify-center bg-blue-600 text-white px-12 py-12">
          <div className="max-w-md">
           <h2 className="text-4xl font-extrabold mb-4 leading-tight">
-            Explore the world’s <br /> leading design portfolios.
+            Create Smarter <br /> Post Faster
           </h2>
           <p className="mb-6 font-bold text-blue-100">
-            Millions of designers and agencies around the world showcase their portfolio work on Flowbite – the home to the world’s best design and creative professionals.
+            Join the growing community of professionals using SOCIALLY to save time, stay consistent, and scale their online presence.
           </p>
           <div className="flex items-center space-x-4">
             <div className="flex -space-x-2 overflow-hidden">
@@ -154,7 +154,7 @@ export default function LoginPage() {
               <img className="w-8 h-8 rounded-full ring-2 ring-white" src="/assets/avatar3.jpg" alt="User 3" />
             </div>
             <p className="text-sm">
-              Over <span className="font-bold">1.5k Happy Customers</span>
+              Over <span className="font-bold">1.2k Happy Users</span>
             </p>
           </div>
         </div>

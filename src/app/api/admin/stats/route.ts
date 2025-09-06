@@ -4,47 +4,46 @@ import clientPromise from "@/lib/mongodb";
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db("mvp");
 
     // --- Users
     const totalUsers = await db.collection("users").countDocuments();
 
-    // --- Posts (assume posts collection)
+    // --- Posts (use scheduled_posts collection)
     const scheduledPosts = await db
-      .collection("posts")
-      .countDocuments({ status: "scheduled" });
+      .collection("scheduled_posts")
+      .countDocuments({ status: "pending" }); // pending == scheduled
     const publishedPosts = await db
-      .collection("posts")
+      .collection("scheduled_posts")
       .countDocuments({ status: "published" });
 
-    // --- Images (assume generations collection)
-    const imagesCreated = await db.collection("generations").countDocuments();
+    // --- Images (use brandGenerations collection)
+    const imagesCreated = await db.collection("brandGenerations").countDocuments();
 
-    // --- Posts over time (group by week)
+    // --- Posts over time (group by day)
     const postsOverTimeAgg = await db
-      .collection("posts")
+      .collection("scheduled_posts")
       .aggregate([
         {
           $group: {
             _id: {
-              year: { $year: "$createdAt" },
-              week: { $isoWeek: "$createdAt" },
+              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
             },
             count: { $sum: 1 },
           },
         },
-        { $sort: { "_id.year": 1, "_id.week": 1 } },
+        { $sort: { _id: 1 } },
       ])
       .toArray();
 
     const postsOverTime = postsOverTimeAgg.map((r) => ({
-      date: `W${r._id.week} ${r._id.year}`,
+      date: r._id,
       count: r.count,
     }));
 
     // --- Posts by platform
     const postsByPlatformAgg = await db
-      .collection("posts")
+      .collection("scheduled_posts")
       .aggregate([
         { $group: { _id: "$platform", value: { $sum: 1 } } },
       ])
@@ -66,7 +65,7 @@ export async function GET() {
   } catch (err) {
     console.error("ADMIN_STATS_ERROR", err);
     return NextResponse.json(
-      { error: "Failed to fetch stats" },
+      { error: "Failed to fetch stats", detail: String(err) },
       { status: 500 }
     );
   }

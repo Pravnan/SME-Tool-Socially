@@ -39,7 +39,7 @@ export default function ScheduleSection({
 
   return (
     <section className="rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 p-5">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Step 4 — Schedule</h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Step 4 - Schedule</h2>
 
       {/* Platform tabs */}
       <div className="mt-3 flex gap-2">

@@ -15,7 +15,7 @@ import ScheduleSection from '@/components/dashboard/ScheduleSection';
 import PreviewCard from '@/components/dashboard/PreviewCard';
 
 type PlatformKey = 'instagram' | 'facebook';
-const CONNECTED_PLATFORMS: PlatformKey[] = ['instagram', 'facebook'];
+const CONNECTED_PLATFORMS: PlatformKey[] = ['instagram'];
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
@@ -23,7 +23,7 @@ export default function DashboardPage() {
 
   // 🚨 Redirect admins to /admin automatically
   useEffect(() => {
-    if (status === 'loading') return; 
+    if (status === 'loading') return;
     if (session?.user?.role === 'admin') {
       router.replace('/admin');
     }
@@ -78,7 +78,7 @@ export default function DashboardPage() {
       const data = (await res.json()) as {
         ok: boolean;
         outputUrl?: string; // signed preview
-        key?: string;       // permanent backend key
+        key?: string; // permanent backend key
         profile?: unknown;
         expanded?: string;
         error?: string;
@@ -89,7 +89,7 @@ export default function DashboardPage() {
       if (data.expanded) setExpandedPrompt(data.expanded);
 
       setImageUrl(data.outputUrl || undefined); // preview
-      setImageKey(data.key || undefined);       // backend reference
+      setImageKey(data.key || undefined); // backend reference
     } catch (err: any) {
       console.error(err);
       alert(err?.message || 'Failed to generate image');
@@ -175,19 +175,89 @@ export default function DashboardPage() {
     }
   }
 
-  async function suggestTime(p: PlatformKey) {
-    // TODO: scheduling suggestion API
+ async function suggestTime(p: PlatformKey) {
+    try {
+      const res = await fetch(`/api/suggest-time?platform=${p}`);
+      if (!res.ok) throw new Error(`API failed: ${res.statusText}`);
+      const data = await res.json();
+
+      setSchedule((s) => ({
+        ...s,
+        [p]: {
+          date: data.date,
+          time: data.time,
+          suggested: true,
+        },
+      }));
+    } catch (err) {
+      console.error("❌ Suggest time error:", err);
+
+      const now = new Date();
+      let suggestedHour = p === "facebook" ? 12 : 19;
+
+      let suggestedDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        suggestedHour,
+        0,
+        0
+      );
+
+      if (suggestedDate.getTime() <= now.getTime()) {
+        suggestedDate.setDate(suggestedDate.getDate() + 1);
+      }
+
+      setSchedule((s) => ({
+        ...s,
+        [p]: {
+          date: suggestedDate.toISOString().slice(0, 10),
+          time: suggestedDate.toTimeString().slice(0, 5),
+          suggested: true,
+        },
+      }));
+    }
   }
 
-  async function schedulePost() {
-    if (!imageKey || !caption.trim()) return alert('Image and caption are required.');
-    const sel = schedule[activePlatform];
-    if (!sel.date || !sel.time) return alert('Pick a date and time.');
-    const when = new Date(`${sel.date}T${sel.time}`);
-    if (isNaN(when.getTime())) return alert('Invalid date/time.');
-    if (when.getTime() < Date.now()) return alert('Please choose a future time.');
-    // TODO: publishing API
+
+
+
+
+async function schedulePost() {
+  if (!imageKey || !imageUrl || !caption.trim()) {
+    return alert("Image and caption are required.");
   }
+
+  const sel = schedule[activePlatform];
+  if (!sel.date || !sel.time) return alert("Pick a date and time.");
+
+  const when = new Date(`${sel.date}T${sel.time}`);
+  if (isNaN(when.getTime())) return alert("Invalid date/time.");
+  if (when.getTime() < Date.now()) return alert("Please choose a future time.");
+
+  try {
+    const res = await fetch("/api/schedule-post", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        imageUrl,   // ✅ full Wasabi URL
+        imageKey,   // ✅ internal reference
+        caption,
+        hashtags,
+        scheduledAt: when.toISOString(),
+        platform: activePlatform,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to schedule");
+
+    alert("✅ Post scheduled successfully!");
+  } catch (err: any) {
+    console.error(err);
+    alert(err?.message || "Failed to schedule post");
+  }
+}
 
   if (session?.user?.role === 'admin') {
     return null;

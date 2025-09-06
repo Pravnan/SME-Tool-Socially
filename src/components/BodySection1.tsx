@@ -27,17 +27,18 @@ export default function BodySection2() {
           className="w-full hidden dark:block"
         />
 
-        {/* Text Content */}
-        <div className="mt-4 md:mt-0">
-          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Let's create more tools and ideas that brings us together.
-          </h2>
-          <p className="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
-            Flowbite helps you connect with friends and communities of people who share your interests.
-            Connecting with your friends and family as well as discovering new ones is easy with features like Groups.
-          </p>
+       
+<div className="mt-4 md:mt-0">
+  <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+    Create smarter content, schedule with ease, grow your brand.
+  </h2>
+  <p className="mb-6 font-light text-gray-500 md:text-lg dark:text-gray-400">
+    Our AI-powered social media management platform helps creators and businesses
+    generate captions, design visuals, and schedule posts across platforms
+    saving time while boosting engagement.
+  </p>
 
-          {/* ✅ Reusable Primary Button */}
+         
           <PrimaryButton href="#">Get started</PrimaryButton>
         </div>
       </div>

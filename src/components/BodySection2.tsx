@@ -1,11 +1,11 @@
 'use client';
 
 import {
+  PencilSquareIcon,
+  HashtagIcon,
+  CalendarDaysIcon,
   ChartBarIcon,
-  ShieldCheckIcon,
-  BoltIcon,
-  CurrencyDollarIcon,
-  BuildingOfficeIcon,
+  PhotoIcon,
   Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
 import FeatureCard from './FeatureCard'; // Adjust path as needed
@@ -15,13 +15,14 @@ export default function BodySection2() {
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
 
-        {/* Section Header */}
         <div className="max-w-screen-md mb-8 lg:mb-16 mx-auto text-center">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Designed for business teams like yours
+            Designed & Developed for creators and businesses like yours
           </h2>
           <p className="text-gray-500 sm:text-xl dark:text-gray-400">
-            Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.
+            Our AI-powered platform helps you generate captions, design visuals,
+            schedule posts, and analyze performance everything you need to
+            grow your brand on social media, all in one place.
           </p>
         </div>
 
@@ -44,44 +45,44 @@ export default function BodySection2() {
 
 const features = [
   {
-    title: 'Marketing',
+    title: 'AI Caption Writing',
     description:
-      'Plan it, create it, launch it. Collaborate seamlessly with your organization and hit your marketing goals every month.',
+      'Generate engaging, brand-consistent captions in seconds with AI that understands your tone and style.',
+    icon: PencilSquareIcon,
+    link: '#',
+  },
+  {
+    title: 'Smart Hashtags',
+    description:
+      'Discover trending and relevant hashtags automatically to maximize reach and engagement.',
+    icon: HashtagIcon,
+    link: '#',
+  },
+  {
+    title: 'Scheduling & Automation',
+    description:
+      'Plan posts in advance and let our system automatically publish them at the best times.',
+    icon: CalendarDaysIcon,
+    link: '#',
+  },
+  {
+    title: 'Performance Analytics',
+    description:
+      'Track likes, comments, shares, and reach with easy-to-read dashboards that guide your next move.',
     icon: ChartBarIcon,
     link: '#',
   },
   {
-    title: 'Legal',
+    title: 'AI Image Generation',
     description:
-      'Protect your organization and stay compliant with structured workflows and custom permissions made for you.',
-    icon: ShieldCheckIcon,
+      'Create eye-catching visuals and resize them for different platforms no design skills required.',
+    icon: PhotoIcon,
     link: '#',
   },
   {
-    title: 'Business Automation',
+    title: 'Team Collaboration',
     description:
-      'Auto-assign tasks, send Slack messages, and much more. Power up with hundreds of pre-built templates.',
-    icon: BoltIcon,
-    link: '#',
-  },
-  {
-    title: 'Finance',
-    description:
-      'Audit-proof software built for critical financial operations like month-end close and quarterly budgeting.',
-    icon: CurrencyDollarIcon,
-    link: '#',
-  },
-  {
-    title: 'Enterprise Design',
-    description:
-      'Craft delightful experiences for both marketing and product with real cross-company collaboration.',
-    icon: BuildingOfficeIcon,
-    link: '#',
-  },
-  {
-    title: 'Operations',
-    description:
-      'Keep your company’s lights on with structured workflows built for efficient teams and individuals.',
+      'Invite teammates, review drafts, and manage social campaigns together in one streamlined workspace.',
     icon: Cog6ToothIcon,
     link: '#',
   },
